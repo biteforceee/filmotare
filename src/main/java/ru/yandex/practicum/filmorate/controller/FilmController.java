@@ -19,7 +19,7 @@ public class FilmController {
 
     private final Map<Long, Film> films = new HashMap<>();
 
-    private final LocalDate FIRST_FILM_DATE = LocalDate.of(1895,12,28);
+    private final LocalDate firstFilmDate = LocalDate.of(1895,12,28);
 
     @GetMapping
     public Collection<Film> findAll() {
@@ -52,7 +52,7 @@ public class FilmController {
             log.warn("Ошибка с описанием фильма.");
             throw new ConditionsNotMetException("Максимальная длина описания не может быть больше 200 символов");
         }
-        if (film.getReleaseDate().isBefore(FIRST_FILM_DATE)) {
+        if (film.getReleaseDate().isBefore(firstFilmDate)) {
             log.warn("Ошибка с датой выхода фильма.");
             throw new ConditionsNotMetException("дата релиза — не может быть раньше 28 декабря 1895 года");
         }
