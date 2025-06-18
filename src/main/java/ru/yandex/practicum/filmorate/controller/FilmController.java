@@ -56,7 +56,7 @@ public class FilmController {
             log.warn("Ошибка с датой выхода фильма.");
             throw new ConditionsNotMetException("дата релиза — не может быть раньше 28 декабря 1895 года");
         }
-        if (film.getDuration() != null && film.getDuration().isNegative()) {
+        if (film.getDuration() != null && film.getDuration() < 0L) {
             log.warn("Ошибка с продолжительностью фильма.");
             throw new ConditionsNotMetException("продолжительность фильма не должна быть отрицательным числом");
         }

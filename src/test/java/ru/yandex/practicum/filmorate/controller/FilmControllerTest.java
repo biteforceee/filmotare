@@ -6,7 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.exception.ConditionsNotMetException;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,28 +30,28 @@ class FilmControllerTest {
                 "film2",
                 "film2 description",
                 LocalDate.of(2000, 2, 2),
-                Duration.ofMinutes(120)
+                120L
         );
 
         badName = new Film(null,
                 "    ",
                 "badName",
                 LocalDate.of(2000, 2, 2),
-                Duration.ofMinutes(120)
+                120L
         );
 
         badDate = new Film(null,
                 "badDescription",
                 "123",
                 LocalDate.of(1895, 11, 2),
-                Duration.ofMinutes(120)
+                120L
         );
 
         badDuration = new Film(null,
                 "badDescription",
                 "123",
                 LocalDate.of(1895, 12, 30),
-                Duration.ofMinutes(-10)
+                -10L
         );
     }
 
@@ -80,9 +79,9 @@ class FilmControllerTest {
     void update() {
         Film newFilm = controller.create(film1);
         assertEquals(film1, newFilm);
-        newFilm.setDuration(Duration.ofMinutes(-1));
+        newFilm.setDuration(-1L);
         assertThrows(ConditionsNotMetException.class, () -> controller.update(newFilm));
-        newFilm.setDuration(Duration.ofMinutes(120));
+        newFilm.setDuration(120L);
         newFilm.setReleaseDate(LocalDate.of(1800,1,1));
         assertThrows(ConditionsNotMetException.class, () -> controller.update(newFilm));
         newFilm.setReleaseDate(LocalDate.of(2000,1,1));
