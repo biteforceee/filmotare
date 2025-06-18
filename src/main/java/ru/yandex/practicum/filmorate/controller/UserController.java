@@ -32,8 +32,8 @@ public class UserController {
         // проверяем выполнение необходимых условий
         log.debug("Валидация пользователя.");
         validate(user);
-        for(Map.Entry<Long,User> e : users.entrySet()){
-            if(e.getValue().getEmail().equals(user.getEmail())){
+        for (Map.Entry<Long,User> e : users.entrySet()) {
+            if (e.getValue().getEmail().equals(user.getEmail())) {
                 log.warn("Этот имейл нельзя использовать при создании нового пользователя.");
                 throw new DuplicatedDataException("Этот имейл уже используется");
             }
@@ -89,9 +89,9 @@ public class UserController {
             User oldUser = users.get(newUser.getId());
             log.debug("Валидация пользователя.");
             validate(newUser);
-            if(!Objects.equals(oldUser.getEmail(), newUser.getEmail())){
-                for(Map.Entry<Long,User> e : users.entrySet()){
-                    if(e.getValue().getEmail().equals(newUser.getEmail())){
+            if (!Objects.equals(oldUser.getEmail(), newUser.getEmail())) {
+                for (Map.Entry<Long,User> e : users.entrySet()) {
+                    if (e.getValue().getEmail().equals(newUser.getEmail())) {
                         log.warn("Этот имейл уже используется.");
                         throw new DuplicatedDataException("Этот имейл уже используется");
                     }
