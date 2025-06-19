@@ -7,9 +7,9 @@ import java.time.LocalDate;
 @EqualsAndHashCode(of = "email")
 @AllArgsConstructor
 public class User {
-    Long id;
-    String login;
-    String email;
-    String name;
-    LocalDate birthday;
+    private Long id;
+    private String login;
+    private String email;
+    private String name;
+    private LocalDate birthday;
 }
