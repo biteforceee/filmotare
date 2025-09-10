@@ -13,7 +13,7 @@ public class User {
     private String email;
     private String name;
     private LocalDate birthday;
-    private Set<Long> friends; //или лучше было сделать HashMap<Long, Set<Long>> в UserService?
+    private Set<Long> friends;
 
     public User(Long id, String login, String email, String name, LocalDate birthday) {
         this.id = id;

@@ -11,17 +11,17 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class ExceptionHandlers {
-    @ExceptionHandler
+    @ExceptionHandler(value = NotFoundException.class)
     public ResponseEntity<Map<String, String>> handleNotFound(final NotFoundException e) {
         return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatusCode.valueOf(404));
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(value = ConditionsNotMetException.class)
     public ResponseEntity<Map<String, String>> handleConditionsNotMet(final ConditionsNotMetException e) {
         return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatusCode.valueOf(400));
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(value = Exception.class)
     public ResponseEntity<Map<String, String>> handleException(final Exception e) {
         return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatusCode.valueOf(500));
     }

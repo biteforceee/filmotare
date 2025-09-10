@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
@@ -15,9 +14,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class FilmService {
-    @Autowired
     private final FilmStorage filmStorage;
-    @Autowired
     private final UserStorage userStorage;
 
     public Film create(Film film) {
@@ -49,8 +46,8 @@ public class FilmService {
     public List<Film> getPopularFilms(Long count) {
         return filmStorage.findAll().stream()
                 .filter(film -> !film.getUsersLikes().isEmpty())
-                .sorted(Comparator.comparing(film -> film.getUsersLikes().size()))
+                .sorted(Comparator.comparing(film -> -film.getUsersLikes().size()))
                 .limit(count)
-                .collect(Collectors.toList()).reversed();
+                .collect(Collectors.toList());
     }
 }

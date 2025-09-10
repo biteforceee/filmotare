@@ -10,13 +10,14 @@ import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class UserServiceTest {
     private final UserService service = new UserService(new InMemoryUserStorage());
-    User user1, user2, badEmail, badLogin, badBirthday, secondEmail;
+    User user1, user2, badEmail, badLogin, badBirthday, secondEmail, friendUser;
 
     @BeforeEach
     void setUp() {
@@ -67,6 +68,14 @@ class UserServiceTest {
                 "",
                 LocalDate.of(2000, 2, 2)
         );
+
+        friendUser = new User(
+                null,
+                "friend",
+                "friend@email.com",
+                "",
+                LocalDate.of(2000, 2, 2)
+        );
     }
 
     @Test
@@ -107,5 +116,66 @@ class UserServiceTest {
         User user = service.update(newUser);
         assertEquals(newUser, user);
         assertEquals(newUser.getLogin(), user.getLogin());
+    }
+
+    @Test
+    void addFriend() {
+        User newUser = service.create(user1);
+        User friend = service.create(friendUser);
+
+        int friendCount = 0;
+
+        assertEquals(0, newUser.getFriends().size());
+
+        service.addFriend(newUser.getId(), friend.getId());
+        friendCount++;
+
+        assertEquals(friendCount, newUser.getFriends().size());
+        assertEquals(friendCount, friend.getFriends().size());
+    }
+
+    @Test
+    void deleteFriend() {
+        User newUser = service.create(user1);
+        User friend = service.create(friendUser);
+
+        assertEquals(0, newUser.getFriends().size());
+
+        service.addFriend(newUser.getId(), friend.getId());
+
+        assertEquals(1, newUser.getFriends().size());
+        assertEquals(1, friend.getFriends().size());
+
+        service.deleteFriend(newUser.getId(), friend.getId());
+
+        assertEquals(0, newUser.getFriends().size());
+        assertEquals(0, friend.getFriends().size());
+    }
+
+    @Test
+    void getUserFriends() {
+        User newUser = service.create(user1);
+        User newUser2 = service.create(user2);
+        User newFriendUser = service.create(friendUser);
+        Set<User> friends = Set.of(newUser2, newFriendUser);
+
+        service.addFriend(newUser.getId(), newUser2.getId());
+        service.addFriend(newUser.getId(), newFriendUser.getId());
+
+        assertEquals(friends.size(), newUser.getFriends().size());
+        assertEquals(friends, service.getUserFriends(newUser.getId()));
+    }
+
+    @Test
+    void getCommonFriends() {
+        User newUser = service.create(user1);
+        User newUser2 = service.create(user2);
+        User newFriendUser = service.create(friendUser);
+        Set<User> commonFriends = Set.of(newFriendUser);
+
+        service.addFriend(newUser.getId(), newFriendUser.getId());
+        service.addFriend(newUser2.getId(), newFriendUser.getId());
+
+        assertEquals(commonFriends, service.getCommonFriends(newUser.getId(), newUser2.getId()));
     }
 }

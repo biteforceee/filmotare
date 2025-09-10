@@ -14,7 +14,7 @@ public class Film {
     private String description;
     private LocalDate releaseDate;
     private Long duration;
-    private Set<Long> usersLikes; //или лучше было сделать HashMap<Long, Set<Long>> в FilmService?
+    private Set<Long> usersLikes;
 
     public Film(Long id, String name, String description, LocalDate releaseDate, Long duration) {
         this.id = id;
