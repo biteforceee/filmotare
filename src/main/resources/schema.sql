@@ -1,0 +1,46 @@
+CREATE TABLE IF NOT EXISTS users (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(40) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    login VARCHAR(40) NOT NULL UNIQUE,
+    birthday DATE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS films (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    duration BIGINT,
+    release_date DATE NOT NULL,
+    rating_id BIGINT REFERENCES mpa_ratings(id)
+);
+
+CREATE TABLE IF NOT EXISTS likes (
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    film_id BIGINT NOT NULL REFERENCES films(id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id, film_id)
+);
+
+CREATE TABLE IF NOT EXISTS genres (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS film_genres (
+    film_id BIGINT NOT NULL REFERENCES films(id) ON DELETE CASCADE,
+    genre_id BIGINT NOT NULL REFERENCES genres(id),
+    PRIMARY KEY (film_id, genre_id)
+);
+
+CREATE TABLE IF NOT EXISTS mpa_ratings (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS friends (
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    friend_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    status BOOLEAN DEFAULT FALSE,
+    PRIMARY KEY (user_id, friend_id),
+    CONSTRAINT chk_not_self CHECK (user_id <> friend_id)
+);

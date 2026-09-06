@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.model;
+package ru.yandex.practicum.filmorate.model.user;
 
 import lombok.*;
 import java.time.LocalDate;
@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(of = "email")
 public class User {
     private Long id;
